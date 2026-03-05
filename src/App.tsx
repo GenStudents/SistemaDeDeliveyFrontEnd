@@ -10,8 +10,7 @@ import Login from './pages/login/Login'
 import Produtos from './pages/produtos/Produtos'
 import Recomendacoes from './pages/recomendacoes/Recomendacoes'
 import Navbar from './components/navbar/Navbar'
-import { Footer } from './components/footer/footer'
-
+import { Footer } from './components/footer/Footer'
 
 function App() {
   
