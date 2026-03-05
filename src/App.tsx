@@ -14,7 +14,7 @@ import { Footer } from './components/footer/footer'
 
 function App() {
   
-  const usuarioLogado = true; // ALTERAR AQUI ÁRA FICAR O NAVBAR CORRETO - ATE CRIAR O LOGIN USUARIO
+  const usuarioLogado = false; // ALTERAR AQUI ÁRA FICAR O NAVBAR CORRETO - ATE CRIAR O LOGIN USUARIO
   //const { usuario } = useContext(AuthContext) → sidebar empurra conteúdo
   //const usuarioLogado = !!usuario → layout cliente + footer
 

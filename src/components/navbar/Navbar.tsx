@@ -13,7 +13,7 @@ function Navbar() {
 
 
   // Mude para 'true' para ver o Restaurante, 'false' para ver o Cliente --- renover a pois fazer o Login
-  const usuarioLogado = true; 
+  const usuarioLogado = false; 
 
   const isActive = (path: string) => location.pathname === path;
   
