@@ -131,7 +131,7 @@ function Navbar() {
   }
 
   // ==========================================
-  //          NAVBAR (CLIENTE) + FOOTER
+  //          NAVBAR (CLIENTE)
   // ==========================================
   
   // COMPONENTE AUXILIAR PARA OS LINKS DO CLIENTE
