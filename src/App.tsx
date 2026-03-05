@@ -8,14 +8,24 @@ import Categorias from './pages/categorias/Categorias'
 import Login from './pages/login/Login'
 import Produtos from './pages/produtos/Produtos'
 import Recomendacoes from './pages/recomendacoes/Recomendacoes'
+import Navbar from './components/navbar/Navbar'
+import { Footer } from './components/footer/footer'
 
 
 function App() {
+  
+  const isRestaurante = window.location.pathname.includes('produtos') || 
+                        window.location.pathname.includes('categorias') ||
+                        window.location.pathname.includes('cadastrarproduto');
+
   return (
     <>
+    
     <ToastContainer/>
     <BrowserRouter>
-    <div className='min-h-[80vh]'>
+    <div className='flex flex-col min-h-screen w-full'>
+    <Navbar />
+    <div className='flex-1 pt-20 w-full'>
       <Routes>
         <Route path='/'element={<Login/>}/>
         <Route path='/login'element={<Login/>}/>
@@ -28,9 +38,10 @@ function App() {
         <Route path='/editarcategorias/:id'element={<FromCategoria/>}/>
         <Route path='/recomendacoes'element={<Recomendacoes/>}/>
       </Routes>
-    </div>
+      </div>
+       {!isRestaurante && <Footer />}
+        </div>
     </BrowserRouter>
-    
     </>
   )
 }
