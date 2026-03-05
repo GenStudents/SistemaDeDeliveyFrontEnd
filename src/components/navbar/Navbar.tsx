@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { UtensilsCrossed, Leaf, ShoppingBag, Menu, X, LayoutDashboard, Pizza, List, ClipboardList, LogOut } from 'lucide-react';
+import { ClipboardList, LayoutDashboard, Leaf, List, LogOut, Menu, Pizza, ShoppingBag, UtensilsCrossed, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const cn = (...classes: string[]) => classes.filter(Boolean).join(' ');
