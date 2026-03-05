@@ -15,16 +15,16 @@ import { Footer } from './components/footer/footer'
 
 function App() {
   
-  const isRestaurante = window.location.pathname.includes('produtos') || 
-                        window.location.pathname.includes('categorias') ||
-                        window.location.pathname.includes('cadastrarproduto');
+  const usuarioLogado = false;
 
   return (
     <>
       <AuthProvider>
         <ToastContainer/>
           <BrowserRouter>
-          <div className='min-h-[80vh]'>
+          <div className='flex flex-col min-h-screen w-full'>
+            <Navbar />
+            <div className='flex-1 w-full pt-20'>
             <Routes>
               <Route path='/'element={<Login/>}/>
               <Route path='/login'element={<Login/>}/>
@@ -37,6 +37,8 @@ function App() {
               <Route path='/editarcategorias/:id'element={<FromCategoria/>}/>
               <Route path='/recomendacoes'element={<Recomendacoes/>}/>
             </Routes>
+          </div>
+          {!usuarioLogado && <Footer />}
           </div>
           </BrowserRouter>
       </AuthProvider>
