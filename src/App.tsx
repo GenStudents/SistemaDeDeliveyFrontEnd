@@ -10,11 +10,12 @@ import Produtos from './pages/produtos/Produtos'
 import Recomendacoes from './pages/recomendacoes/Recomendacoes'
 import Navbar from './components/navbar/Navbar'
 import { Footer } from './components/footer/footer'
+import Dashboard from './pages/dashboard/Dashboard'
 
 
 function App() {
   
-  const usuarioLogado = false; // ALTERAR AQUI ÁRA FICAR O NAVBAR CORRETO - ATE CRIAR O LOGIN USUARIO
+  const usuarioLogado = true; // ALTERAR AQUI ÁRA FICAR O NAVBAR CORRETO - ATE CRIAR O LOGIN USUARIO
   //const { usuario } = useContext(AuthContext) → sidebar empurra conteúdo
   //const usuarioLogado = !!usuario → layout cliente + footer
 
@@ -33,6 +34,7 @@ function App() {
             <Routes>
               <Route path='/'element={<Login/>}/>
               <Route path='/login'element={<Login/>}/>
+               <Route path='/dashboard' element={<Dashboard />} />
               <Route path='/cadastrar'element={<Cadastro/>}/>
               <Route path='/produtos'element={<Produtos/>}/>
               <Route path='/cadastrarproduto'element={<FromProdutos/>}/>
