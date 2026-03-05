@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import './App.css'
-import FromCategoria from './components/categorias/formcategoria/FromCategoria'
+import { Footer } from './components/footer/footer'
+import Navbar from './components/navbar/Navbar'
 import FromProdutos from './components/produtos/fromprdutos/FromProdutos'
 import { AuthProvider } from './contestx/AuthContext'
 import Cadastro from './pages/cadastro/Cadastro'
@@ -10,7 +11,8 @@ import Login from './pages/login/Login'
 import Produtos from './pages/produtos/Produtos'
 import Recomendacoes from './pages/recomendacoes/Recomendacoes'
 import Navbar from './components/navbar/Navbar'
-import { Footer } from './components/footer/Footer'
+import { Footer } from './components/footer/footer'
+
 
 function App() {
   
@@ -32,8 +34,6 @@ function App() {
               <Route path='/cadastrarproduto'element={<FromProdutos/>}/>
               <Route path='/editarproduto/:id'element={<FromProdutos/>}/>
               <Route path='/categorias'element={<Categorias/>}/>
-              <Route path='/cadastrarcategorias'element={<FromCategoria/>}/>
-              <Route path='/editarcategorias/:id'element={<FromCategoria/>}/>
               <Route path='/recomendacoes'element={<Recomendacoes/>}/>
             </Routes>
           </div>
