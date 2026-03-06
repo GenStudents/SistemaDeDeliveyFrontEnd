@@ -1,6 +1,35 @@
 import { UtensilsCrossed } from 'lucide-react';
+import { useContext, useEffect, useState, type ChangeEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ClipLoader } from 'react-spinners';
+import { AuthContext } from '../../contestx/AuthContext';
+import type LoginUser from '../../models/LoginUser';
+   
+function Login() {
 
-const Login = () => {
+  const navigate = useNavigate();
+  const {usuario,handleLogin,isLoading}= useContext(AuthContext)
+
+  const[loginUser,setLoginUser]=useState<LoginUser>({} as LoginUser)
+
+  useEffect(()=>{
+    if(usuario.token !==""){
+      navigate("/produtos")
+    }
+  },[usuario])
+
+  function atualizarEstado(e:ChangeEvent<HTMLInputElement>){
+    setLoginUser({
+      ...loginUser,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  function login(e: ChangeEvent<HTMLFormElement>){
+    e.preventDefault()
+    handleLogin(loginUser)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-sans text-gray-900">
       
@@ -21,29 +50,35 @@ const Login = () => {
           <p className="text-sm text-gray-500">Insira suas credenciais para acessar o painel</p>
         </div>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={login}>
           {/* Input E-mail */}
           <div>
-            <label className="block text-sm font-semibold mb-1.5" htmlFor="email">
+            <label className="block text-sm font-semibold mb-1.5" htmlFor="usuario">
               E-mail
             </label>
             <input
-              id="email"
-              type="email"
+              id="usuario"
+              name="usuario"
+              type="text"
               placeholder="seu@email.com"
+              value={loginUser.usuario}
+              onChange={(e: ChangeEvent<HTMLInputElement>)=> atualizarEstado(e)}
               className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d95f18]/50 focus:border-[#d95f18] transition-colors"
             />
           </div>
 
           {/* Input Senha */}
           <div>
-            <label className="block text-sm font-semibold mb-1.5" htmlFor="password">
+            <label className="block text-sm font-semibold mb-1.5" htmlFor="senha">
               Senha
             </label>
             <input
-              id="password"
+              id="senha"
               type="password"
+              name="senha"
+              value={loginUser.senha}
               placeholder="Sua senha"
+              onChange={(e: ChangeEvent<HTMLInputElement>)=> atualizarEstado(e)}
               className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d95f18]/50 focus:border-[#d95f18] transition-colors"
             />
           </div>
@@ -51,9 +86,8 @@ const Login = () => {
           {/* Botão Entrar */}
           <button
             type="submit"
-            className="w-full bg-[#d95f18] hover:bg-[#c25415] text-white font-medium py-2.5 px-4 rounded-lg transition-colors mt-2"
-          >
-            Entrar
+            className="w-full bg-[#d95f18] hover:bg-[#c25415] text-white font-medium py-2.5 px-4 rounded-lg transition-colors mt-2">
+            {isLoading ? <ClipLoader color='#ffffff' size={24}/>: <span>Entrar</span>}
           </button>
         </form>
       </div>
@@ -61,9 +95,9 @@ const Login = () => {
       {/* Rodapé */}
       <p className="mt-8 text-sm text-gray-500">
         Nao possui uma conta?{' '}
-        <a href="#" className="text-[#d95f18] hover:underline font-medium">
+        <Link to="/cadastrar" className="text-[#d95f18] hover:underline font-medium">
           Criar conta
-        </a>
+        </Link>
       </p>
 
     </div>

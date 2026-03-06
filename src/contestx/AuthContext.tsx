@@ -11,7 +11,7 @@ interface AuthContextProps{
 }
 
 interface AuthProviderProps{
-  children :ReactNode
+  children:ReactNode
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
