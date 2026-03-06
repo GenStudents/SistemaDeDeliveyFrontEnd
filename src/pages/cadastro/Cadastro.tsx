@@ -164,7 +164,7 @@ function Cadastro(){
 
           {/* Botão Entrar */}
           <button
-            type="reset"
+            type="submit"
             onClick={retornar}
             className="w-full bg-[#d95f18] hover:bg-[#c25415] text-white font-medium py-2.5 px-4 rounded-lg transition-colors mt-2"
           >
