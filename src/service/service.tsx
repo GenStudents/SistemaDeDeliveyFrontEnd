@@ -96,3 +96,4 @@ export const deletar = async (url: string, header: object) => {
     toast.error("Erro ao deletar");
   }
 }
+
