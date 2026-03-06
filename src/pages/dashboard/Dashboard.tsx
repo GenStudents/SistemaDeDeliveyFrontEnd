@@ -1,85 +1,75 @@
 import { useEffect, useState } from "react"
-import { Package, FolderOpen, TrendingUp } from "lucide-react"
-import type { Produto } from "../../models/Produto"
-import type Categoria from "../../models/Categoria"
+import { Package, FolderOpen, ShoppingCart } from "lucide-react"
 import { CardDashboard } from "../../components/dashboard/cardDashboard/CardDashboard"
 import { ProdutosRecentes } from "../../components/dashboard/produtosRecentes/ProdutosRecentes"
-import { buscar } from "../../service/service"
-
+import type { Produto } from "../../models/Produto"
+import type Categoria from "../../models/Categoria"
 
 export default function Dashboard() {
 
   const [produtos, setProdutos] = useState<Produto[]>([])
   const [categorias, setCategorias] = useState<Categoria[]>([])
-  const [loading, setLoading] = useState(true)
-  const header = {
-    headers: {
-      Authorization: "seu_token_aqui"
-    }
-  }
+  const [pedidos, setPedidos] = useState<number>(0)
 
   useEffect(() => {
 
-    async function carregarDados() {
-        await buscar("/produtos", setProdutos, header)
-      await buscar("/categorias", setCategorias, header)
-
-      setLoading(false)
-    }
-
-    carregarDados()
+    // depois você conecta na API
 
   }, [])
 
-  if (loading) {
-    return <p>Carregando...</p>
-  }
-
   return (
-    <div className="flex flex-col gap-6">
+
+    // LAYOUT PRINCIPAL
+    <div className="flex flex-col gap-6 max-w-7xl mx-auto">
 
       <div>
-        <h1 className="text-2xl font-bold">Dashboard</h1>
 
-        <p className="text-gray-500 text-sm">
+        <h1 className="text-2xl font-bold text-gray-900">
+          Dashboard
+        </h1>
+
+        <p className="text-sm text-gray-500 mt-1">
           Visão geral do seu cardápio digital
         </p>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-3">
-
-        <CardDashboard
-          title="Total de Produtos"
-          value={produtos.length}
-          description="Produtos cadastrados"
-          icon={Package}
-        />
-
-        <CardDashboard
-          title="Total de Categorias"
-          value={categorias.length}
-          description="Categorias ativas"
-          icon={FolderOpen}
-        />
-
-        <CardDashboard
-          title="Produtos Recentes"
-          value={produtos.slice(-5).length}
-          description="Adicionados recentemente"
-          icon={TrendingUp}
-        />
 
       </div>
 
-      <div className="bg-white rounded-xl border p-6">
+      {/* GRID RESPONSIVO*/}
+      <div className="
+        grid
+        gap-4
+        sm:grid-cols-2
+        lg:grid-cols-3
+      ">
 
-        <h2 className="font-semibold mb-4">
-          Produtos Recentes
-        </h2>
+        {/* CARD DE PRODUTOS*/}
+        <CardDashboard
+          titulo="Total de Produtos"
+          valor={produtos.length}
+          descricao="Produtos cadastrados"
+          icone={Package}
+          rota="/produtos"
+        />
 
-        <ProdutosRecentes produtos={produtos} />
+        <CardDashboard
+          titulo="Total de Categorias"
+          valor={categorias.length}
+          descricao="Categorias ativas"
+          icone={FolderOpen}
+          rota="/categorias"
+        />
+
+        <CardDashboard
+        titulo="Pedidos Realizados"
+        valor={pedidos}
+        descricao="Pedidos registrados"
+        icone={ShoppingCart}
+        rota="/pedidos"
+        />
 
       </div>
+
+      <ProdutosRecentes produtos={produtos} />
 
     </div>
   )

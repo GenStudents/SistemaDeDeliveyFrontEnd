@@ -1,48 +1,95 @@
 import type { Produto } from "../../../models/Produto"
 
-
 interface Props {
   produtos: Produto[]
 }
 
 export function ProdutosRecentes({ produtos }: Props) {
 
-  const produtosRecentes = produtos.slice(-5).reverse()
+  // LÓGICA DE FILTRO
+  const ultimos = produtos.slice(-5).reverse()
 
-  function formatPrice(value: number) {
+  // FORMATAÇÃO DE MOEDA
+  function formatarPreco(valor: number) {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
-      currency: "BRL",
-    }).format(value)
-  }
-
-  if (produtosRecentes.length === 0) {
-    return (
-      <p className="text-center text-gray-400 py-10">
-        Nenhum produto cadastrado
-      </p>
-    )
+      currency: "BRL"
+    }).format(valor)
   }
 
   return (
-    <div className="space-y-3">
 
-      {produtosRecentes.map((produto) => (
-        <div
-          key={produto.id}
-          className="flex justify-between items-center border rounded-lg p-4"
-        >
+    <div className="
+      bg-white
+      border border-gray-200
+      rounded-xl
+      p-6
+      shadow-sm
+    ">
 
-          <div>
-            <p className="font-medium">{produto.nome}</p>
+      <div className="mb-5">
+
+        <h2 className="text-lg font-semibold text-gray-900">
+          Produtos Recentes
+        </h2>
+
+        <p className="text-sm text-gray-500 mt-1">
+          Os últimos produtos adicionados ao cardápio
+        </p>
+
+      </div>
+
+      <div className="flex flex-col gap-3">
+
+        {ultimos.map(produto => (
+
+          <div
+            key={produto.id}
+            className="
+            flex items-center justify-between
+            border border-gray-200
+            rounded-lg
+            px-4 py-3
+            hover:bg-gray-50
+            transition
+            "
+          >
+
+            <div className="flex flex-col gap-1">
+
+              <span className="text-sm font-medium text-gray-900">
+                {produto.nome}
+              </span>
+
+              {produto.categoria && (
+                <span className="
+                  text-xs
+                  bg-gray-100
+                  text-gray-700
+                  px-2 py-1
+                  rounded-md
+                  w-fit
+                ">
+                  {produto.categoria.nome}
+                </span>
+              )}
+
+            </div>
+
+            <span className="
+              text-sm
+              font-semibold
+              text-orange-600
+            ">
+              {formatarPreco(produto.preco)}
+            </span>
+
           </div>
 
-          <span className="text-orange-500 font-semibold">
-            {formatPrice(produto.preco)}
-          </span>
+        ))}
 
-        </div>
-      ))}
+      </div>
+
     </div>
   )
 }
