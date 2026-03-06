@@ -1,27 +1,60 @@
-import type { Icon } from "@phosphor-icons/react"
+import type { LucideIcon } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 
 interface Props {
-  title: string
-  value: number
-  description: string
-  icon: Icon
+  titulo: string
+  valor: number
+  descricao: string
+  icone: LucideIcon
+  rota: string
 }
 
-export function CardDashboard({ title, value, description, icon: Icon }: Props) {
+export function CardDashboard({
+  titulo,
+  valor,
+  descricao,
+  icone: Icon,
+  rota
+}: Props) {
+
+  const navigate = useNavigate()
+
   return (
-    <div className="bg-white rounded-xl border p-6 flex justify-between items-center shadow-sm">
-      <div>
-        <p className="text-sm text-gray-500">{title}</p>
+    <div
+      onClick={() => navigate(rota)}
+      className="
+      bg-white
+      rounded-xl
+      border border-gray-200
+      p-6
+      flex items-center justify-between
+      shadow-sm
+      hover:shadow-md
+      transition
+      cursor-pointer
+      "
+    >
+      <div className="flex flex-col gap-1">
 
-        <h2 className="text-3xl font-bold">{value}</h2>
+        <span className="text-sm text-gray-500">
+          {titulo}
+        </span>
 
-        <p className="text-xs text-gray-400">{description}</p>
+        <span className="text-3xl font-bold text-gray-900">
+          {valor}
+        </span>
+
+        <span className="text-xs text-gray-400">
+          {descricao}
+        </span>
+
       </div>
 
-      <div className="bg-orange-100 p-3 rounded-lg">
-        <Icon size={20} className="text-orange-500" />
+      <div className="bg-orange-100 p-3 rounded-xl">
+        <Icon size={22} className="text-orange-600"/>
       </div>
+
     </div>
   )
 }
