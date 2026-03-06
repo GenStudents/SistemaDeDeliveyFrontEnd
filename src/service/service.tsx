@@ -40,9 +40,9 @@ export const login = async(url: string, dados: object, setDados:Function) => {
 // }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-export const buscar = async (url: string, setDados: Function, header: object) => {
+export const buscar = async (url: string, setDados: Function, header?: object) => {
   try {
-    const resposta = await api.get(url, header)
+    const resposta = header ? await api.get(url, header) : await api.get(url)
     setDados(resposta.data)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (erro: any) {

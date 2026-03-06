@@ -1,4 +1,4 @@
-import { createContext, useState, type ReactNode } from "react";
+import { createContext, useState, useEffect, type ReactNode } from "react";
 import type LoginUser from "../models/LoginUser";
 import { login } from "../service/service";
 import { ToastAlerta } from "../utils/ToastAlert";
@@ -28,31 +28,51 @@ export function AuthProvider({children}:AuthProviderProps){
     token:'',
   })
 
-const [isLoading,setIsLoading] = useState(false)
+  const [isLoading,setIsLoading] = useState(false)
 
-async function handleLogin(usuarioLogin:LoginUser){
-  setIsLoading(true)
+  // Restaurar usuário do localStorage ao carregar
+  useEffect(() => {
+    const usuarioSalvo = localStorage.getItem('usuario')
+    if (usuarioSalvo) {
+      try {
+        setUsuario(JSON.parse(usuarioSalvo))
+      } catch (erro) {
+        console.error("Erro ao restaurar usuário:", erro)
+      }
+    }
+  }, [])
 
-  try{
-    await login('/usuarios/logar',usuarioLogin,setUsuario)
-    ToastAlerta("Login Realizado com Sucesso","sucesso")
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  }catch(error){
-    ToastAlerta("Erro ao Realizar o login, Confirme suas informações", 'info')
-  }
-    setIsLoading(false)
-  }
+  // Salvar usuário no localStorage quando mudar
+  useEffect(() => {
+    if (usuario.token) {
+      localStorage.setItem('usuario', JSON.stringify(usuario))
+    }
+  }, [usuario])
 
-  function handleLogout(){
-    setUsuario({
-      id: 0,
-    nome:'',
-    usuario:'',
-    senha:'',
-    foto:'',
-    token:'',
-    })
-  }
+  async function handleLogin(usuarioLogin:LoginUser){
+    setIsLoading(true)
+
+    try{
+      await login('/usuarios/logar',usuarioLogin,setUsuario)
+      ToastAlerta("Login Realizado com Sucesso","sucesso")
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    }catch(error){
+      ToastAlerta("Erro ao Realizar o login, Confirme suas informações", 'info')
+    }
+      setIsLoading(false)
+    }
+
+    function handleLogout(){
+      setUsuario({
+        id: 0,
+        nome:'',
+        usuario:'',
+        senha:'',
+        foto:'',
+        token:'',
+      })
+      localStorage.removeItem('usuario')
+    }
   return(
     <AuthContext.Provider value={{usuario,handleLogin,handleLogout,isLoading}}>
       {children}

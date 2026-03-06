@@ -24,20 +24,19 @@ function FormProduto() {
 
   const [categorias, setCategorias] = useState<Categoria[]>([])
 
-  const header = { headers: { Authorization: token } }
-
   // Buscar categorias para o select
   useEffect(() => {
     if (!token) return
+    const header = { headers: { Authorization: token } }
     buscar("/categorias", setCategorias, header)
   }, [token])
 
   // Buscar produto caso seja edição
   useEffect(() => {
-    if (id) {
-      buscar(`/produtos/${id}`, setProduto, header)
-    }
-  }, [id])
+    if (!id || !token) return
+    const header = { headers: { Authorization: token } }
+    buscar(`/produtos/${id}`, setProduto, header)
+  }, [id, token])
 
   function atualizarEstado(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value, type, checked } = e.target as HTMLInputElement
@@ -55,12 +54,27 @@ function FormProduto() {
         return
       }
 
+      if (!produto.nome.trim()) {
+        toast.error("Nome do produto é obrigatório")
+        return
+      }
+
+      if (produto.preco <= 0) {
+        toast.error("Preço deve ser maior que zero")
+        return
+      }
+
+      if (!produto.categoria?.id) {
+        toast.error("Selecione uma categoria")
+        return
+      }
+
+      const header = { headers: { Authorization: token } }
+
       if (id) {
         await atualizar(`/produtos/${id}`, produto, setProduto, header)
-        toast.success("Produto atualizado com sucesso!")
       } else {
         await cadastrar("/produtos", produto, setProduto, header)
-        toast.success("Produto cadastrado com sucesso!")
       }
 
       navigate("/produtos")
