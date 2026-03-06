@@ -1,17 +1,17 @@
 import { Folder, Pencil, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
-
+import { toast } from "react-toastify";
 import type Categoria from "../../../models/Categoria";
 import { buscar } from "../../../service/service";
-
 import DeletarCategoria from "../deletarcategoria/DeletarCategoria";
 import FormCategoria from "../formcategoria/FormCategoria";
 
 function ListaCategoria() {
   const [isLoading, setIsLoading] = useState(false);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
-
+  const navigate = useNavigate();
   const [modalEditar, setModalEditar] = useState(false);
   const [modalDeletar, setModalDeletar] = useState(false);
   const [categoriaSelecionada, setCategoriaSelecionada] = useState<Categoria | null>(null);
@@ -23,6 +23,37 @@ function ListaCategoria() {
       Authorization: `Bearer ${token}`,
     },
   };
+
+//   useEffect(() => {
+//     if (token !== "") {
+//         buscarCategorias();
+//     } else {
+//         toast.info("Você precisa estar logado");
+//         navigate("/login");
+//     }
+// }, [token]);
+
+useEffect(() => {
+    // 1. Verificamos se o token existe. 
+    // Se o token for nulo, undefined ou vazio, redirecionamos imediatamente.
+    if (!token || token === "") {
+        // Usamos o toastId para garantir que, se o React renderizar 2x (Strict Mode),
+        // a mensagem só apareça uma única vez na tela.
+        toast.info("Você precisa estar logado para acessar este recurso.", {
+            toastId: "auth-info"
+        });
+        navigate("/login");
+        return; // O 'return' impede que o código abaixo (buscarCategorias) seja executado.
+    }
+
+    // 2. Se o código chegou aqui, significa que temos um token.
+    buscarCategorias();
+
+    // O array de dependências [token] está correto, pois se o usuário deslogar 
+    // em outra aba ou o estado do token mudar, o efeito reage a essa mudança.
+}, [token, navigate]);
+
+
 
   useEffect(() => {
     buscarCategorias();

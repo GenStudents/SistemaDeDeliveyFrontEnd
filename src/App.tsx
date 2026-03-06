@@ -1,15 +1,15 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import './App.css'
-import FromProdutos from './components/produtos/fromprdutos/FromProdutos'
+import { Footer } from './components/footer/footer'
+import Navbar from './components/navbar/Navbar'
+import FormProdutos from './components/produtos/formprdutos/FormProdutos'
 import { AuthProvider } from './contestx/AuthContext'
 import Cadastro from './pages/cadastro/Cadastro'
 import Categorias from './pages/categorias/Categorias'
 import Login from './pages/login/Login'
 import Produtos from './pages/produtos/Produtos'
 import Recomendacoes from './pages/recomendacoes/Recomendacoes'
-import Navbar from './components/navbar/Navbar'
-import { Footer } from './components/footer/footer'
 
 
 function App() {
@@ -35,8 +35,8 @@ function App() {
               <Route path='/login'element={<Login/>}/>
               <Route path='/cadastrar'element={<Cadastro/>}/>
               <Route path='/produtos'element={<Produtos/>}/>
-              <Route path='/cadastrarproduto'element={<FromProdutos/>}/>
-              <Route path='/editarproduto/:id'element={<FromProdutos/>}/>
+              <Route path='/cadastrarproduto'element={<FormProdutos/>}/>
+              <Route path='/editarproduto/:id'element={<FormProdutos/>}/>
               <Route path='/categorias'element={<Categorias/>}/>
               <Route path='/recomendacoes'element={<Recomendacoes/>}/>
             </Routes>
