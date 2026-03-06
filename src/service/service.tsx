@@ -27,17 +27,41 @@ export const login = async(url: string, dados: object, setDados:Function) => {
   }
 }
 
+ 
+// export const buscar = async (url: string, setDados: Function, header: object) => {
+//   try {
+//     const resposta = await api.get(url, header)
+//     setDados(resposta.data)
+//   } catch (erro) {
+//     console.error("Erro ao buscar dados:", erro);
+//     toast.error("Erro ao carregar dados");
+//     setDados([]);
+//   }
+// }
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export const buscar = async (url: string, setDados: Function, header: object) => {
   try {
     const resposta = await api.get(url, header)
     setDados(resposta.data)
-  } catch (erro) {
-    console.error("Erro ao buscar dados:", erro);
-    toast.error("Erro ao carregar dados");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (erro: any) {
+    if (erro.response && erro.response.status === 401) {
+      toast.error(
+        <div>
+          Sessão expirada.
+          <a href="/login" style={{ color: 'blue', fontWeight: 'bold' }}>Faça login aqui</a>
+        </div>,
+        { toastId: "auth-error" } // Evita que apareçam 4 toasts iguais
+      );
+    } else {
+      console.error("Erro ao buscar dados:", erro);
+      toast.error("Erro ao carregar dados");
+    }
     setDados([]);
   }
 }
+
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export const cadastrar = async (url: string, dados: object, setDados: Function, header: object) => {
