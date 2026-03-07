@@ -6,6 +6,8 @@ import type { Produto } from "../../models/Produto"
 import type Categoria from "../../models/Categoria"
 import { buscar } from "../../service/service"
 import { AuthContext } from "../../contestx/AuthContext"
+import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 
 export default function Dashboard() {
 
@@ -14,11 +16,24 @@ export default function Dashboard() {
   const [pedidos, setPedidos] = useState<number>(8)
 
   const { usuario } = useContext(AuthContext)
+  const navigate = useNavigate()
   const token = usuario.token
   const header = { headers: { Authorization: token}}
   
   useEffect(() => {
 
+    // verifica autenticação
+      if (!token || token === "") {
+
+        toast.info("Você precisa estar logado para acessar este recurso.", {
+          toastId: "auth-info"
+        })
+
+        navigate("/login")
+        return
+      }
+
+    // carrega dados da API
     async function carregarDados() {
       
       await buscar("/produtos", setProdutos, header)
@@ -28,7 +43,7 @@ export default function Dashboard() {
     
     carregarDados()
 
-  }, [])
+  }, [token, navigate])
 
   return (
 
