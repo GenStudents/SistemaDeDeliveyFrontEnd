@@ -1,19 +1,32 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Package, FolderOpen, ShoppingCart } from "lucide-react"
 import { CardDashboard } from "../../components/dashboard/cardDashboard/CardDashboard"
 import { ProdutosRecentes } from "../../components/dashboard/produtosRecentes/ProdutosRecentes"
 import type { Produto } from "../../models/Produto"
 import type Categoria from "../../models/Categoria"
+import { buscar } from "../../service/service"
+import { AuthContext } from "../../contestx/AuthContext"
 
 export default function Dashboard() {
 
   const [produtos, setProdutos] = useState<Produto[]>([])
   const [categorias, setCategorias] = useState<Categoria[]>([])
-  const [pedidos, setPedidos] = useState<number>(0)
+  const [pedidos, setPedidos] = useState<number>(8)
 
+  const { usuario } = useContext(AuthContext)
+  const token = usuario.token
+  const header = { headers: { Authorization: token}}
+  
   useEffect(() => {
 
-    // depois você conecta na API
+    async function carregarDados() {
+      
+      await buscar("/produtos", setProdutos, header)
+      await buscar("/categorias", setCategorias, header)
+    //await buscar("/pedidos", setPedidos, header) // quando existir endpoint de pedidos
+    }
+    
+    carregarDados()
 
   }, [])
 
