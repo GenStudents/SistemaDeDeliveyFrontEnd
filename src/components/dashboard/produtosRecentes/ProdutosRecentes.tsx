@@ -70,7 +70,7 @@ export function ProdutosRecentes({ produtos }: Props) {
                   rounded-md
                   w-fit
                 ">
-                  {produto.categoria.nome}
+                  {produto.categoria.descricao}
                 </span>
               )}
 
