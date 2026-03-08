@@ -6,5 +6,5 @@ export interface Produto {
   descricao: string
   preco: number
   disponivel: boolean
-  categoria?: Categoria | null
+  categoria: Categoria | null
 }
