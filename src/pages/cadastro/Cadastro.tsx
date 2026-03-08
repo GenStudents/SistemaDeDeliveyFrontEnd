@@ -1,5 +1,5 @@
 import { UtensilsCrossed } from "lucide-react"
-import { type ChangeEvent, useEffect, useState } from "react"
+import { type ChangeEvent, type FormEvent, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { ClipLoader } from "react-spinners"
 import type Usuario from "../../models/Usuario"
@@ -45,7 +45,7 @@ function Cadastro(){
     setConfirmarSenha(e.target.value)
   }
 
-  async function cadastrarNovoUsuario(e: ChangeEvent<HTMLFormElement>){
+  async function cadastrarNovoUsuario(e: FormEvent<HTMLFormElement>){
     e.preventDefault()
 
     if(confirmarSenha === usuario.senha && usuario.senha.length >= 8){
@@ -165,8 +165,7 @@ function Cadastro(){
           {/* Botão Entrar */}
           <button
             type="submit"
-            onClick={retornar}
-            className="w-full bg-[#d95f18] hover:bg-[#c25415] text-white font-medium py-2.5 px-4 rounded-lg transition-colors mt-2"
+            className="w-full bg-[#d95f18] hover:bg-[#c254f15] text-white font-medium py-2.5 px-4 rounded-lg transition-colors mt-2"
           >
              { isLoading ? 
                   <ClipLoader 

@@ -1,13 +1,13 @@
+import { FolderOpen, Package, ShoppingCart } from "lucide-react"
 import { useContext, useEffect, useState } from "react"
-import { Package, FolderOpen, ShoppingCart } from "lucide-react"
-import { CardDashboard } from "../../components/dashboard/cardDashboard/CardDashboard"
-import { ProdutosRecentes } from "../../components/dashboard/produtosRecentes/ProdutosRecentes"
-import type { Produto } from "../../models/Produto"
-import type Categoria from "../../models/Categoria"
-import { buscar } from "../../service/service"
-import { AuthContext } from "../../contestx/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import { CardDashboard } from "../../components/dashboard/cardDashboard/CardDashboard"
+import { ProdutosRecentes } from "../../components/dashboard/produtosRecentes/ProdutosRecentes"
+import { AuthContext } from "../../contestx/AuthContext"
+import type Categoria from "../../models/Categoria"
+import type Produto from "../../models/Produto"
+import { buscar } from "../../service/service"
 
 export default function Dashboard() {
 
