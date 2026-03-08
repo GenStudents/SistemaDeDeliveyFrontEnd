@@ -1,4 +1,4 @@
-import { FolderOpen, Package, ShoppingCart } from "lucide-react"
+import { ClipboardList, FolderOpen, Package, ShoppingCart } from "lucide-react"
 import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
@@ -13,7 +13,6 @@ export default function Dashboard() {
 
   const [produtos, setProdutos] = useState<Produto[]>([])
   const [categorias, setCategorias] = useState<Categoria[]>([])
-  const [pedidos, setPedidos] = useState<number>(8)
 
   const { usuario } = useContext(AuthContext)
   const navigate = useNavigate()
@@ -88,11 +87,11 @@ export default function Dashboard() {
         />
 
         <CardDashboard
-        titulo="Pedidos Realizados"
-        valor={pedidos}
-        descricao="Pedidos registrados"
-        icone={ShoppingCart}
-        rota="/pedidos"
+        titulo="Itens Disponíveis"
+        valor={produtos.length}
+        descricao="Itens disponíveis no sistema"
+        icone={ClipboardList}
+        rota="/produtos"
         />
 
       </div>
