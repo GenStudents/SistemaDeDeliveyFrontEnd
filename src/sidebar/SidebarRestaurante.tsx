@@ -95,22 +95,6 @@ function SidebarRestaurante() {
             Dashboard
           </Link>
 
-
-          {/* Pedidos */}
-          <Link
-            to="/pedidos"
-            className={cn(
-              "flex items-center gap-3 px-4 py-3 rounded-xl transition",
-              isActive("/pedidos")
-                ? "bg-white/10 border-l-4 border-[#D35400]"
-                : "text-gray-400 hover:bg-white/5"
-            )}
-          >
-            <ClipboardList size={20}/>
-            Pedidos
-          </Link>
-
-
           {/* Produtos */}
           <Link
             to="/produtos"
