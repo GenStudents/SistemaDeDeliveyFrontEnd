@@ -1,6 +1,6 @@
 import type Categoria from "./Categoria"
 
-export interface Produto {
+export default interface Produto {
   id?: number
   nome: string
   descricao: string

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, type ChangeEvent, type FormEvent } from "react"
+import { useContext, useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 import type { Produto } from "../../../models/Produto"
@@ -6,6 +6,8 @@ import type Categoria from "../../../models/Categoria"
 
 import { cadastrar, atualizar, buscar } from "../../../service/service"
 import { AuthContext } from "../../../contestx/AuthContext"
+import type Produto from "../../../models/Produto"
+import { atualizar, buscar, cadastrar } from "../../../service/service"
 
 function FormProduto() {
 

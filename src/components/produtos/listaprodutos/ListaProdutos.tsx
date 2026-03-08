@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"
 import type { Produto } from "../../../models/Produto"
 import { buscar } from "../../../service/service"
 import { AuthContext } from "../../../contestx/AuthContext"
+import type Produto from "../../../models/Produto"
+import { buscar, deletar } from "../../../service/service"
 
 function ListaProdutos() {
 
