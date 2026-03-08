@@ -64,7 +64,8 @@ export function ProdutosRecentes({ produtos }: Props) {
               {produto.categoria && (
                 <span className="
                   text-xs
-                  bg-gray-100
+                  font-medium
+                  bg-orange-50
                   text-gray-700
                   px-2 py-1
                   rounded-md
@@ -79,7 +80,7 @@ export function ProdutosRecentes({ produtos }: Props) {
             <span className="
               text-sm
               font-semibold
-              text-orange-600
+              text-amber-600
             ">
               {formatarPreco(produto.preco)}
             </span>
