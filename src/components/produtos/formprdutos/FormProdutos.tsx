@@ -1,203 +1,281 @@
 import { useContext, useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
-import type Categoria from "../../../models/Categoria"
 import type Produto from "../../../models/Produto"
-
+import type Categoria from "../../../models/Categoria"
 import { AuthContext } from "../../../contestx/AuthContext"
-import { atualizar, buscar, cadastrar } from "../../../service/service"
+import { buscar, cadastrar, atualizar } from "../../../service/service"
 
-function FormProduto() {
-
+function FormProdutos() {
   const navigate = useNavigate()
-  const { id } = useParams()
-
+  
+  // Pegamos o ID da URL. Se existir, é edição. Se não, é cadastro.
+  const { id } = useParams<{ id: string }>()
+  
   const { usuario } = useContext(AuthContext)
-  const token = usuario?.token || ""
+  const token = usuario.token
 
+  const [categorias, setCategorias] = useState<Categoria[]>([])
+  
   const [produto, setProduto] = useState<Produto>({
     id: 0,
     nome: "",
     descricao: "",
-    preco: 0,
-    disponivel: true,
-    categoria: null
+    preco: "",
+    foto: "",
+    quantidade: 0,
+    disponivel: true, // Padrão como true para novos cadastros
+    calorias: 0,
+    proteina: 0,
+    gordura: 0,
+    acucar: 0,
+    carboidratos: 0,
+    categoria: {
+      id: 0,
+      descricao: ""
+    }
   })
 
-  const [categorias, setCategorias] = useState<Categoria[]>([])
+  async function buscarCategorias() {
+    try {
+      await buscar("/categorias", setCategorias, {
+        headers: { Authorization: token }
+      })
+    } catch (error) {
+      console.error("Erro ao buscar categorias", error)
+    }
+  }
 
-  const header = {
-    headers: {
-      Authorization: `Bearer ${token}`
+  // Busca o produto específico se estivermos na tela de edição
+  async function buscarProdutoPorId(idProduto: string) {
+    try {
+      await buscar(`/produtos/${idProduto}`, setProduto, {
+        headers: { Authorization: token }
+      })
+    } catch (error) {
+      console.error("Erro ao buscar produto", error)
     }
   }
 
   useEffect(() => {
-
     if (token === "") {
       alert("Você precisa estar logado")
       navigate("/")
       return
     }
+    
+    buscarCategorias()
 
-    // buscar categorias
-    buscar("/categorias", setCategorias, header)
-
-    // se for edição buscar produto
+    // Se tiver um ID na URL, busca os dados dele para preencher o formulário
     if (id !== undefined) {
-      buscar(`/produtos/${id}`, setProduto, header)
+      buscarProdutoPorId(id)
     }
+  }, [token, id])
 
-  }, [id, token])
-
-  function atualizarEstado(e: ChangeEvent<HTMLInputElement>) {
-
-    const { name, value, type, checked } = e.target
+  function atualizarEstado(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const target = e.target as HTMLInputElement;
+    const { name, value, type, checked } = target;
 
     setProduto({
       ...produto,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : name === "preco"
-          ? Number(value)
-          : value
+      [name]: type === "checkbox" ? checked : (type === "number" ? Number(value) : value)
     })
+  }
 
+  function selecionarCategoria(e: ChangeEvent<HTMLSelectElement>) {
+    const categoriaSelecionada = categorias.find(
+      (c) => c.id === Number(e.target.value)
+    )
+    if (categoriaSelecionada) {
+      setProduto({
+        ...produto,
+        categoria: categoriaSelecionada
+      })
+    }
   }
 
   async function gerarNovoProduto(e: FormEvent<HTMLFormElement>) {
-
     e.preventDefault()
 
-    // valida categoria
-    if (!produto.categoria) {
-      alert("Selecione uma categoria")
-      return
-    }
-
-    try {
-
-      if (id !== undefined) {
-
-        await atualizar(`/produtos/${id}`, produto, setProduto, header)
+    // Lógica para Atualizar (se tiver ID) ou Cadastrar (se não tiver)
+    if (id !== undefined) {
+      try {
+        await atualizar(`/produtos`, produto, setProduto, {
+          headers: { Authorization: token }
+        })
         alert("Produto atualizado com sucesso!")
-
-      } else {
-
-        await cadastrar("/produtos", produto, setProduto, header)
-        alert("Produto cadastrado com sucesso!")
-
+        navigate("/produtos")
+      } catch (error) {
+        console.error("Erro ao atualizar produto", error)
+        alert("Erro ao atualizar o produto.")
       }
-
-      navigate("/produtos")
-
-    } catch (error) {
-
-      console.log(error)
-      alert("Erro ao salvar produto")
-
+    } else {
+      try {
+        await cadastrar("/produtos", produto, setProduto, {
+          headers: { Authorization: token }
+        })
+        alert("Produto cadastrado com sucesso!")
+        navigate("/produtos")
+      } catch (error) {
+        console.error("Erro ao cadastrar produto", error)
+        alert("Erro ao cadastrar o produto.")
+      }
     }
-
   }
 
   return (
-
-    <div className="container flex flex-col items-center mx-auto">
-
-      <h2 className="text-2xl font-bold mb-4">
-        {id ? "Editar Produto" : "Cadastrar Produto"}
-      </h2>
-
-      <form
+    <div className="flex justify-center min-h-screen bg-[#F8F9FA] p-8">
+      <form 
+        className="flex flex-col gap-6 w-full max-w-2xl bg-white p-8 rounded-xl shadow-sm border border-gray-200" 
         onSubmit={gerarNovoProduto}
-        className="flex flex-col w-1/2 gap-4"
       >
+        <div className="border-b pb-4 mb-2">
+          {/* Título dinâmico */}
+          <h2 className="text-2xl font-bold text-gray-800">
+            {id !== undefined ? "Editar Produto" : "Cadastrar Novo Produto"}
+          </h2>
+          <p className="text-sm text-gray-500 mt-1">
+            {id !== undefined 
+              ? "Atualize as informações do produto existente no cardápio." 
+              : "Preencha os detalhes do produto para adicioná-lo ao cardápio."}
+          </p>
+        </div>
 
-        {/* NOME */}
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome do Produto"
-          value={produto.nome}
-          onChange={atualizarEstado}
-          className="border p-2 rounded"
-          required
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold text-gray-700">Nome do Produto</label>
+            <input
+              type="text"
+              name="nome"
+              placeholder="Ex: Hambúrguer Clássico"
+              value={produto.nome}
+              onChange={atualizarEstado}
+              className="p-2 border rounded-md outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+              required
+            />
+          </div>
 
-        {/* DESCRIÇÃO */}
-        <input
-          type="text"
-          name="descricao"
-          placeholder="Descrição"
-          value={produto.descricao}
-          onChange={atualizarEstado}
-          className="border p-2 rounded"
-          required
-        />
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold text-gray-700">Preço (R$)</label>
+            <input
+              type="number"
+              name="preco"
+              placeholder="0.00"
+              step="0.01"
+              value={produto.preco}
+              onChange={atualizarEstado}
+              className="p-2 border rounded-md outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+              required
+            />
+          </div>
+        </div>
 
-        {/* PREÇO */}
-        <input
-          type="number"
-          name="preco"
-          placeholder="Preço"
-          value={produto.preco}
-          onChange={atualizarEstado}
-          className="border p-2 rounded"
-          required
-        />
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-semibold text-gray-700">Descrição</label>
+          <textarea
+            name="descricao"
+            placeholder="Breve descrição do produto..."
+            value={produto.descricao}
+            onChange={atualizarEstado}
+            rows={3}
+            className="p-2 border rounded-md outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+          />
+        </div>
 
-        {/* CATEGORIA */}
-        <select
-          name="categoria"
-          value={produto.categoria?.id || ""}
-          onChange={(e) =>
-            setProduto({
-              ...produto,
-              categoria: { id: Number(e.target.value) } as Categoria
-            })
-          }
-          className="border p-2 rounded"
-          required
-        >
-
-          <option value="">Selecione uma categoria</option>
-
-          {categorias.map((categoria) => (
-            <option key={categoria.id} value={categoria.id}>
-              {categoria.descricao}
-            </option>
-          ))}
-
-        </select>
-
-        {/* DISPONÍVEL */}
-        <label className="flex items-center gap-2">
-
+        <div className="flex items-center gap-3 p-4 border rounded-md bg-gray-50 hover:bg-gray-100 transition-colors">
           <input
             type="checkbox"
+            id="disponivel"
             name="disponivel"
             checked={produto.disponivel}
             onChange={atualizarEstado}
+            className="w-5 h-5 text-orange-500 border-gray-300 rounded focus:ring-orange-500 cursor-pointer"
           />
+          <div className="flex flex-col">
+            <label htmlFor="disponivel" className="text-sm font-semibold text-gray-700 cursor-pointer">
+              Produto Disponível
+            </label>
+            <span className="text-xs text-gray-500">
+              {produto.disponivel 
+                ? "O produto ficará visível no cardápio para os clientes." 
+                : "O produto ficará oculto do cardápio."}
+            </span>
+          </div>
+        </div>
 
-          Produto disponível
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold text-gray-700">Categoria</label>
+            <select
+              value={produto.categoria.id}
+              onChange={selecionarCategoria}
+              className="p-2 border rounded-md outline-none focus:border-orange-500 bg-white"
+              required
+            >
+              <option value="" disabled>Selecione uma categoria</option>
+              {categorias.map((categoria) => (
+                <option key={categoria.id} value={categoria.id}>
+                  {categoria.descricao}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        </label>
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-semibold text-gray-700">URL da Foto</label>
+            <input
+              type="text"
+              name="foto"
+              placeholder="https://..."
+              value={produto.foto}
+              onChange={atualizarEstado}
+              className="p-2 border rounded-md outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500"
+            />
+          </div>
+        </div>
 
-        {/* BOTÃO */}
-        <button
-          type="submit"
-          className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-        >
-          Salvar
-        </button>
+        <div className="mt-4 border-t pt-6">
+          <h3 className="text-lg font-bold text-gray-800 mb-4">Informações Nutricionais</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-600 uppercase">Calorias (kcal)</label>
+              <input type="number" name="calorias" value={produto.calorias} onChange={atualizarEstado} className="p-2 border rounded-md text-sm" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-600 uppercase">Proteína (g)</label>
+              <input type="number" name="proteina" value={produto.proteina} onChange={atualizarEstado} className="p-2 border rounded-md text-sm" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-600 uppercase">Gordura (g)</label>
+              <input type="number" name="gordura" value={produto.gordura} onChange={atualizarEstado} className="p-2 border rounded-md text-sm" />
+            </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-xs font-semibold text-gray-600 uppercase">Açúcar (g)</label>
+              <input type="number" name="acucar" value={produto.acucar} onChange={atualizarEstado} className="p-2 border rounded-md text-sm" />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-4 mt-6">
+          <button
+            type="button"
+            onClick={() => navigate("/produtos")}
+            className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 font-medium"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            className="px-6 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 font-medium transition-colors"
+          >
+            {/* Botão dinâmico */}
+            {id !== undefined ? "Atualizar Produto" : "Salvar Produto"}
+          </button>
+        </div>
 
       </form>
-
     </div>
-
   )
 }
 
-export default FormProduto
+export default FormProdutos
