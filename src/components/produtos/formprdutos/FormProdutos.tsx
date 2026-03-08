@@ -164,7 +164,7 @@ function FormProduto() {
 
           {categorias.map((categoria) => (
             <option key={categoria.id} value={categoria.id}>
-              {categoria.nome}
+              {categoria.descricao}
             </option>
           ))}
 
