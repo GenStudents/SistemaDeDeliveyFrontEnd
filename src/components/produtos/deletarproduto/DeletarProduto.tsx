@@ -46,7 +46,7 @@ function DeletarProduto() {
                 <div>
                     <p>Tem certeza que deseja excluir o produto:</p>
                     <h3>{produto.nome}</h3>
-                    <p>Preço: R$ {produto.preco.toFixed(2)}</p>
+                    <p>Preço: R$ {Number(produto.preco).toFixed(2)}</p>
                 </div>
             )}
 

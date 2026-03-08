@@ -4,8 +4,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import type Categoria from "../../../models/Categoria"
 import type Produto from "../../../models/Produto"
 
-import { cadastrar, atualizar, buscar } from "../../../service/service"
 import { AuthContext } from "../../../contestx/AuthContext"
+import { atualizar, buscar, cadastrar } from "../../../service/service"
 
 function FormProduto() {
 
@@ -16,6 +16,7 @@ function FormProduto() {
   const token = usuario?.token || ""
 
   const [produto, setProduto] = useState<Produto>({
+    id: 0,
     nome: "",
     descricao: "",
     preco: 0,

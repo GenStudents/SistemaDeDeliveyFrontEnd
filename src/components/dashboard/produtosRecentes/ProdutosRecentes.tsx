@@ -81,7 +81,7 @@ export function ProdutosRecentes({ produtos }: Props) {
               font-semibold
               text-orange-600
             ">
-              {formatarPreco(produto.preco)}
+              {formatarPreco(Number(produto.preco))}
             </span>
 
           </div>
