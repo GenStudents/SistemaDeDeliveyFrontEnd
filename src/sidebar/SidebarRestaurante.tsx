@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { UtensilsCrossed, LayoutDashboard, Pizza, List, ClipboardList, LogOut, Menu, X } from "lucide-react"
+import { UtensilsCrossed, LayoutDashboard, List, ClipboardList, LogOut, Menu, X, Package } from "lucide-react"
 import { toast } from "react-toastify"
 
 const cn = (...classes: string[]) => classes.filter(Boolean).join(" ")
@@ -105,7 +105,7 @@ function SidebarRestaurante() {
                 : "text-gray-400 hover:bg-white/5"
             )}
           >
-            <Pizza size={20}/>
+            <Package size={20}/>
             Produtos
           </Link>
 
@@ -171,7 +171,7 @@ function SidebarRestaurante() {
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50"
             >
-              <Pizza size={20}/>
+              <Package size={20}/>
               Produtos
             </Link>
 
