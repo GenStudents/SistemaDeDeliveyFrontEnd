@@ -24,41 +24,6 @@ function ListaCategoria() {
     },
   };
 
-//   useEffect(() => {
-//     if (token !== "") {
-//         buscarCategorias();
-//     } else {
-//         toast.info("Você precisa estar logado");
-//         navigate("/login");
-//     }
-// }, [token]);
-
-useEffect(() => {
-    // 1. Verificamos se o token existe. 
-    // Se o token for nulo, undefined ou vazio, redirecionamos imediatamente.
-    if (!token || token === "") {
-        // Usamos o toastId para garantir que, se o React renderizar 2x (Strict Mode),
-        // a mensagem só apareça uma única vez na tela.
-        toast.info("Você precisa estar logado para acessar este recurso.", {
-            toastId: "auth-info"
-        });
-        navigate("/login");
-        return; // O 'return' impede que o código abaixo (buscarCategorias) seja executado.
-    }
-
-    // 2. Se o código chegou aqui, significa que temos um token.
-    buscarCategorias();
-
-    // O array de dependências [token] está correto, pois se o usuário deslogar 
-    // em outra aba ou o estado do token mudar, o efeito reage a essa mudança.
-}, [token, navigate]);
-
-
-
-  useEffect(() => {
-    buscarCategorias();
-  }, []);
-
   async function buscarCategorias() {
     try {
       setIsLoading(true);
@@ -69,6 +34,15 @@ useEffect(() => {
       setIsLoading(false);
     }
   }
+
+    useEffect(() => {
+    if (token !== "") {
+        buscarCategorias();
+    } else {
+        toast.info("Você precisa estar logado");
+        navigate("/login");
+    }
+}, [token]);
 
   function abrirModalNovaCategoria() {
     setCategoriaSelecionada(null);
