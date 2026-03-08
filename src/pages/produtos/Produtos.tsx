@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext, type ChangeEvent, type FormEvent } from "react"
+import { useContext, useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import { AuthContext } from "../../contestx/AuthContext"
-import { cadastrar, atualizar, buscar } from "../../service/service"
-import type { Produto } from "../../models/Produto"
-import type Categoria from "../../models/Categoria"
 import { toast } from "react-toastify"
+import { AuthContext } from "../../contestx/AuthContext"
+import type Categoria from "../../models/Categoria"
+import type Produto from "../../models/Produto"
+import { atualizar, buscar, cadastrar } from "../../service/service"
 
 function FormProduto() {
 
