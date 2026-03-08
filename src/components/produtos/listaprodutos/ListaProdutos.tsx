@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import type { Produto } from "../../../models/Produto"
-import { buscar } from "../../../service/service"
+import type Produto from "../../../models/Produto"
+import { buscar, deletar } from "../../../service/service"
 import { AuthContext } from "../../../contestx/AuthContext"
 
 function ListaProdutos() {

@@ -1,14 +1,5 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
 import { Link } from "react-router-dom"
 import ListaProdutos from "../../components/produtos/listaprodutos/ListaProdutos"
-
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <div style={{padding:20}}>Teste: React está rendendo</div>
-  </StrictMode>,
-)
 
 function Produtos() {
   return (
