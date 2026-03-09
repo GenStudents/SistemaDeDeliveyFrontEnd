@@ -102,12 +102,14 @@ function ListaProdutos() {
         </h2>
       </div>
 
+      {/* O overflow-x-auto permite rolar para o lado no celular */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse min-w-[600px]">
           <thead className="bg-white border-b border-gray-200">
             <tr>
               <th className="p-4 text-sm font-semibold text-gray-500">Nome</th>
-              <th className="p-4 text-sm font-semibold text-gray-500">Categoria</th>
+              {/* Esconde a categoria em telas menores que 'sm' */}
+              <th className="p-4 text-sm font-semibold text-gray-500 hidden sm:table-cell">Categoria</th>
               <th className="p-4 text-sm font-semibold text-gray-500">Preço</th>
               <th className="p-4 text-sm font-semibold text-gray-500">Saúde</th>
               <th className="p-4 text-sm font-semibold text-gray-500 text-right w-24">Ações</th>
@@ -121,15 +123,16 @@ function ListaProdutos() {
                   {produto.nome}
                 </td>
                 
-                <td className="p-4 text-sm text-gray-500">
+                {/* Esconde a categoria em telas menores que 'sm' */}
+                <td className="p-4 text-sm text-gray-500 hidden sm:table-cell">
                   {produto.categoria?.descricao || <span className="text-gray-300">-</span>}
                 </td>
 
-                <td className="p-4 text-sm text-gray-600 font-mono">
+                <td className="p-4 text-sm text-gray-600 font-mono whitespace-nowrap">
                   {formatarPreco(produto.preco)}
                 </td>
 
-                <td className="p-4">
+                <td className="p-4 whitespace-nowrap">
                   {renderBadgeSaude(produto)}
                 </td>
 
