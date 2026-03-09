@@ -16,18 +16,17 @@ export const cadastroUsuario = async (url: string, dados: object, setDados: Func
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-export const login = async(url: string, dados: object, setDados:Function) => {
+export const login = async (url: string, dados: object, setDados: Function) => {
   try {
-    const resposta = await api.post(url,dados);
+    const resposta = await api.post(url, dados);
     setDados(resposta.data)
   } catch (erro) {
     console.error("Erro ao fazer login:", erro);
-    toast.error("Erro ao fazer login");
+    toast.error("Erro no login, confirme seus dados");
   }
 }
 
- 
+
 // export const buscar = async (url: string, setDados: Function, header: object) => {
 //   try {
 //     const resposta = await api.get(url, header)
@@ -39,12 +38,10 @@ export const login = async(url: string, dados: object, setDados:Function) => {
 //   }
 // }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export const buscar = async (url: string, setDados: Function, header: object) => {
   try {
     const resposta = await api.get(url, header)
     setDados(resposta.data)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (erro: any) {
     if (erro.response && erro.response.status === 401) {
       toast.error(
@@ -62,8 +59,6 @@ export const buscar = async (url: string, setDados: Function, header: object) =>
   }
 }
 
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export const cadastrar = async (url: string, dados: object, setDados: Function, header: object) => {
   try {
     const resposta = await api.post(url, dados, header)
@@ -75,7 +70,6 @@ export const cadastrar = async (url: string, dados: object, setDados: Function, 
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export const atualizar = async (url: string, dados: object, setDados: Function, header: object) => {
   try {
     const resposta = await api.put(url, dados, header)
@@ -96,4 +90,3 @@ export const deletar = async (url: string, header: object) => {
     toast.error("Erro ao deletar");
   }
 }
-
