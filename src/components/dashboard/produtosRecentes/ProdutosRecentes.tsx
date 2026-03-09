@@ -7,7 +7,7 @@ interface Props {
 export function ProdutosRecentes({ produtos }: Props) {
 
   // LÓGICA DE FILTRO
-  const ultimos = produtos.slice(-5).reverse()
+  const ultimos = produtos.slice(-10).reverse()
 
   // FORMATAÇÃO DE MOEDA
   function formatarPreco(valor: number) {
@@ -39,7 +39,7 @@ export function ProdutosRecentes({ produtos }: Props) {
 
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 max-h-80 overflow-y-auto pr-2">
 
         {ultimos.map(produto => (
 
