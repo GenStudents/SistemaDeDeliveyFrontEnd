@@ -167,15 +167,6 @@ function SidebarRestaurante() {
             </Link>
 
             <Link
-              to="/produtos"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50"
-            >
-              <Package size={20}/>
-              Produtos
-            </Link>
-
-            <Link
               to="/categorias"
               onClick={() => setIsMenuOpen(false)}
               className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50"
