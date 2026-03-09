@@ -90,12 +90,13 @@ async function carregarDados() {
         </div>
       )}
 
-      <div className="flex flex-col w-full max-w-5xl mx-auto my-4">
+      <div className="w-full max-w-7xl mx-auto flex flex-col gap-6">
         {/* HEADER DA PÁGINA */}
-        <div className="flex justify-between items-start mb-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h1 className="text-[24px] font-bold text-[#000000]">Categorias</h1>
-            <p className="text-[#6C757D] text-[14px] mt-1">
+            <h1 className="text-2xl font-bold text-gray-900">
+              Categorias</h1>
+            <p className="text-sm text-gray-500 mt-1">
               Organize seus produtos por categorias
             </p>
           </div>
@@ -104,10 +105,11 @@ async function carregarDados() {
             type="button"
             onClick={abrirModalNovaCategoria}
             className="
+              w-full sm:w-auto
               bg-[#D35400] hover:bg-[#b54800]
-              text-white font-semibold text-[14px]
+              text-white font-semibold text-sm
               px-4 py-2 rounded-[8px]
-              flex items-center gap-2 transition-colors
+              flex items-center justify-center gap-2 transition-colors
             "
           >
             <Plus size={18} />
@@ -115,41 +117,68 @@ async function carregarDados() {
           </button>
         </div>
 
+        {/* Card principal da lista */}
+        <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+
         {/* CONTAINER DA TABELA */}
-        <div className="bg-[#FFFFFF] border border-[#E9ECEF] rounded-[12px] shadow-[0px_4px_6px_rgba(0,0,0,0.05)] p-6">
-          <div className="flex items-center gap-2 mb-6 text-[#000000]">
+        <div className="p-6 border-b border-gray-100">
+          <div className="flex items-center gap-2 text-gray-900">
             <Folder size={20} />
-            <h2 className="text-[18px] font-bold">Lista de Categorias</h2>
+            <h2 className="text-lg font-semibold">
+              Lista de Categorias
+              </h2>
+          </div>
           </div>
 
+           {/* Área com scroll interno */}
+          <div className="max-h-[500px] overflow-y-auto">
           {!isLoading && categorias.length === 0 && (
-            <div className="text-center py-8 text-[#6C757D]">
+            <div className="text-center py-8 text-gray-500 text-sm">
               Nenhuma categoria encontrada.
             </div>
           )}
 
-          {categorias.length > 0 && (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-[#E9ECEF] text-[#000000]">
-                    <th className="pb-3 text-[14px] font-bold">Descrição</th>
-                    <th className="pb-3 text-[14px] font-bold text-right w-24">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
+           {categorias.length > 0 && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[640px]">
+                  <thead className="bg-white border-b border-gray-200 sticky top-0 z-10">
+                    <tr>
+                      <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                        Descrição
+                      </th>
+                      <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-right w-24">
+                        Ações
+                      </th>
+                    </tr>
+                  </thead>
+
+                <tbody className="divide-y divide-gray-100">
                   {Array.isArray(categorias) && categorias.map((categoria) => (
-                    <tr key={categoria.id} className="border-b border-[#E9ECEF] last:border-0 hover:bg-[#F8F9FA] transition-colors">
-                      <td className="py-4 text-[#495057] text-[14px]">
+                    <tr 
+                    key={categoria.id} 
+                    className="hover:bg-gray-50 transition-colors">
+
+                      <td className="px-6 py-5 text-sm text-gray-500 mt-1">
                         {categoria.descricao}
                       </td>
-                      <td className="py-4 flex justify-end gap-4">
-                        <button onClick={() => abrirEditar(categoria)}>
-                          <Pencil size={18} className="text-[#495057] hover:text-[#D35400] transition-colors" />
+
+                      <td className="px-6 py-5">
+                        <div className="flex items-center justify-end gap-3">
+                        <button 
+                        onClick={() => abrirEditar(categoria)}
+                        title="Editar"
+                              className="text-gray-400 hover:text-orange-500 transition-colors"
+                        >
+                          <Pencil size={18} />
                         </button>
-                        <button onClick={() => abrirDeletar(categoria)}>
-                          <Trash2 size={18} className="text-[#C62828] hover:text-red-800 transition-colors" />
+
+                        <button onClick={() => abrirDeletar(categoria)}
+                          title="Deletar"
+                              className="text-gray-400 hover:text-red-500 transition-colors"
+                              >
+                          <Trash2 size={18} />
                         </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -159,6 +188,7 @@ async function carregarDados() {
           )}
         </div>
       </div>
+    </div>
 
       {modalEditar && (
       <FormCategoria
