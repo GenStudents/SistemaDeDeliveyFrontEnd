@@ -68,7 +68,7 @@ function Cadastro(){
   }
 
   return(
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4 font-sans text-gray-900">
+    <div className=" bg-gray-50 flex flex-col items-center justify-center p-4 font-sans text-gray-900">
       
       {/* Cabeçalho / Logo */}
       <div className="flex flex-col items-center mb-8 text-center">
