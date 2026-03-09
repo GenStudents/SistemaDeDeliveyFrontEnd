@@ -2,7 +2,7 @@ import ListaCategorias from "../../components/categorias/listacategoria/ListaCat
 
 function Categoria() {
   return (
-    <div className="w-full min-h-screen bg-[#F8F9FA] font-sans p-8">
+    <div className="w-full">
       <ListaCategorias />
     </div>
   );
