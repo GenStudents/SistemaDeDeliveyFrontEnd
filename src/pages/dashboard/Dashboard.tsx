@@ -47,7 +47,7 @@ export default function Dashboard() {
   return (
 
     // LAYOUT PRINCIPAL
-    <div className="flex flex-col gap-6 max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto flex flex-col gap-6">
 
       <div>
 
