@@ -105,10 +105,11 @@ async function carregarDados() {
             type="button"
             onClick={abrirModalNovaCategoria}
             className="
-              w-full sm:w-auto
+              self-start
+              sm:w-auto
               bg-[#D35400] hover:bg-[#b54800]
               text-white font-semibold text-sm
-              px-4 py-2 rounded-[8px]
+              px-4 py-2 rounded-lg
               flex items-center justify-center gap-2 transition-colors
             "
           >
@@ -138,8 +139,49 @@ async function carregarDados() {
             </div>
           )}
 
+
+          {/* ATULIZAÇÃO REALIZADA AQUI: versão mobile em cards */}
+          <div className="md:hidden p-4 space-y-3">
+              {categorias.map((categoria) => (
+                <div
+                  key={categoria.id}
+                  className="border border-gray-200 rounded-xl p-4 shadow-sm hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
+                        Descrição
+                      </p>
+
+                      <p className="mt-2 text-sm font-normal text-gray-600">
+                        {categoria.descricao}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => abrirEditar(categoria)}
+                        title="Editar"
+                        className="rounded-lg p-2 text-gray-400 hover:text-orange-500 hover:bg-orange-50 transition-colors"
+                      >
+                        <Pencil size={18} />
+                      </button>
+
+                      <button
+                        onClick={() => abrirDeletar(categoria)}
+                        title="Deletar"
+                        className="rounded-lg p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
            {categorias.length > 0 && (
-              <div className="overflow-x-auto">
+              <div className="hidden md:block overflow-x-auto">
                 <table className="w-full text-left border-collapse min-w-[640px]">
                   <thead className="bg-white border-b border-gray-200 sticky top-0 z-10">
                     <tr>
