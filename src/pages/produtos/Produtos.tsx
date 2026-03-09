@@ -1,7 +1,31 @@
 import { Link } from "react-router-dom"
 import ListaProdutos from "../../components/produtos/listaprodutos/ListaProdutos"
+import type Produto from "../../models/Produto"
+import { useState } from "react"
+import FormProdutos from "../../components/produtos/formprdutos/FormProdutos"
 
 function Produtos() {
+
+  const [modalProdutoAberto, setModalProdutoAberto] = useState(false)
+  const [produtoSelecionado, setProdutoSelecionado] = useState<Produto | null>(null)
+  const [recarregarLista, setRecarregarLista] = useState(0)
+
+  function abrirNovoProduto() {
+    setProdutoSelecionado(null)
+    setModalProdutoAberto(true)
+  }
+
+  function abrirEditarProduto(produto: Produto) {
+    setProdutoSelecionado(produto)
+    setModalProdutoAberto(true)
+  }
+
+  function fecharModalProduto() {
+    setModalProdutoAberto(false)
+    setProdutoSelecionado(null)
+    setRecarregarLista((prev) => prev + 1)
+  }
+
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col gap-6">
       {/* Header responsivo */}
@@ -16,10 +40,11 @@ function Produtos() {
         </div>
 
         {/* Botão adaptável */}
-        <Link
-          to="/cadastrarproduto"
+        <button
+          type="button"
+          onClick={abrirNovoProduto}
           className="
-          self-start
+            self-start
             sm:w-auto
             bg-[#D35400] hover:bg-[#b54800]
             text-white font-semibold text-sm
@@ -29,13 +54,24 @@ function Produtos() {
           "
         >
           + Novo Produto
-        </Link>
+        </button>
       </div>
 
       {/* Wrapper para evitar quebra em tabelas/listas grandes */}
-        <ListaProdutos />
-      </div>
+        <ListaProdutos
+        onEditarProduto={abrirEditarProduto}
+        refreshKey={recarregarLista}
+      />
+
+      {modalProdutoAberto && (
+        <FormProdutos
+          produtoInicial={produtoSelecionado}
+          fecharModal={fecharModalProduto}
+        />
+      )}
+    </div>
   )
 }
-
 export default Produtos
+        
+      
