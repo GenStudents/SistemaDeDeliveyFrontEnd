@@ -70,6 +70,7 @@ export const cadastrar = async (url: string, dados: object, setDados: Function, 
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export const atualizar = async (url: string, dados: object, setDados: Function, header: object) => {
   try {
     const resposta = await api.put(url, dados, header)
