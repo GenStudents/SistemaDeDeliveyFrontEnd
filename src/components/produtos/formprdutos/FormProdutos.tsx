@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import { X } from "lucide-react"
-import type Produto from "../../../models/Produto"
-import type Categoria from "../../../models/Categoria"
+import { useContext, useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import { AuthContext } from "../../../contestx/AuthContext"
-import { buscar, cadastrar, atualizar } from "../../../service/service"
+import type Categoria from "../../../models/Categoria"
+import type Produto from "../../../models/Produto"
+import { atualizar, buscar, cadastrar } from "../../../service/service"
 
 interface FormProdutosProps {
   produtoInicial?: Produto | null
-  fecharModal: () => void
+  fecharModal?: () => void
 }
 
 function FormProdutos({ produtoInicial, fecharModal }: FormProdutosProps) {
