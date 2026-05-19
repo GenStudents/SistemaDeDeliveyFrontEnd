@@ -36,7 +36,7 @@ function NavbarCliente() {
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           
           {/* LOGO */}
-          <Link to="/" className="flex items-center gap-2 group">
+          <Link to="/cardapio" className="flex items-center gap-2 group">
             <div className="bg-[#D35400] p-1.5 rounded-lg group-hover:scale-110 transition-transform">
               <UtensilsCrossed className="text-white w-5 h-5" />
             </div>

@@ -1,12 +1,15 @@
 import { useContext, useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { Pencil, Trash2, Heart } from "lucide-react"
+import { Pencil, Trash2, Heart, Package } from "lucide-react"
 import type Produto from "../../../models/Produto"
 import { buscar, deletar } from "../../../service/service"
 import { AuthContext } from "../../../contestx/AuthContext"
 
-function ListaProdutos() {
-  const navigate = useNavigate()
+interface ListaProdutosProps {
+  onEditarProduto: (produto: Produto) => void
+  refreshKey?: number
+}
+
+function ListaProdutos({ onEditarProduto, refreshKey = 0 }: ListaProdutosProps) {
   const [produtos, setProdutos] = useState<Produto[]>([])
 
   const { usuario } = useContext(AuthContext)
@@ -31,8 +34,7 @@ function ListaProdutos() {
     if (confirmar) {
       try {
         await deletar(`/produtos/${id}`, header)
-        alert("Produto deletado com sucesso!")
-        buscarProdutos() // Recarrega a lista após deletar
+        buscarProdutos()
       } catch (error) {
         console.error("Erro ao deletar produto", error)
         alert("Erro ao deletar produto.")
@@ -41,32 +43,26 @@ function ListaProdutos() {
   }
 
   useEffect(() => {
-    if (token === "") {
-      alert("Você precisa estar logado")
-      navigate("/")
-      return
-    }
+    if (token === "") return
     buscarProdutos()
-  }, [token])
+  }, [token, refreshKey])
 
-  // Função para formatar o preço para R$
   function formatarPreco(valor: number | string) {
     const numero = typeof valor === "string" ? parseFloat(valor) : valor
+
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
-      currency: "BRL",
+      currency: "BRL"
     }).format(numero || 0)
   }
 
-  // Função que define se é Saudável, Moderado ou Pouco Saudável
   function renderBadgeSaude(produto: Produto) {
-    // Se não tiver nenhuma informação nutricional, não mostra nada
     if (!produto.calorias && !produto.gordura && !produto.acucar) {
       return <span className="text-gray-400 text-xs">-</span>
     }
 
-    // Lógica simplificada de pontuação para o semáforo
     let score = 0
+
     if (produto.calorias && produto.calorias > 400) score += 2
     else if (produto.calorias && produto.calorias > 250) score += 1
 
@@ -75,94 +71,161 @@ function ListaProdutos() {
 
     if (score >= 3) {
       return (
-        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-600 border border-red-200">
-          <Heart size={12} /> Pouco saudável
-        </span>
-      )
-    } else if (score >= 1) {
-      return (
-        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-600 border border-yellow-200">
-          <Heart size={12} /> Moderado
-        </span>
-      )
-    } else {
-      return (
-        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 border border-green-200">
-          <Heart size={12} /> Saudável
+        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-red-50 text-red-500 border border-red-200 whitespace-nowrap">
+          <Heart size={12} />
+          Pouco saudável
         </span>
       )
     }
+
+    if (score >= 1) {
+      return (
+        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-600 border border-amber-200 whitespace-nowrap">
+          <Heart size={12} />
+          Moderado
+        </span>
+      )
+    }
+
+    return (
+      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-600 border border-green-200 whitespace-nowrap">
+        <Heart size={12} />
+        Saudável
+      </span>
+    )
   }
 
   return (
     <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="p-4 border-b border-gray-100 bg-gray-50/50">
-        <h2 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+      <div className="p-4 sm:p-6 border-b border-gray-100">
+        <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
+          <Package size={18} />
           Lista de Produtos
         </h2>
       </div>
 
-      {/* O overflow-x-auto permite rolar para o lado no celular */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse min-w-[600px]">
-          <thead className="bg-white border-b border-gray-200">
-            <tr>
-              <th className="p-4 text-sm font-semibold text-gray-500">Nome</th>
-              {/* Esconde a categoria em telas menores que 'sm' */}
-              <th className="p-4 text-sm font-semibold text-gray-500 hidden sm:table-cell">Categoria</th>
-              <th className="p-4 text-sm font-semibold text-gray-500">Preço</th>
-              <th className="p-4 text-sm font-semibold text-gray-500">Saúde</th>
-              <th className="p-4 text-sm font-semibold text-gray-500 text-right w-24">Ações</th>
-            </tr>
-          </thead>
-
-          <tbody className="divide-y divide-gray-100">
-            {produtos.map((produto) => (
-              <tr key={produto.id} className="hover:bg-gray-50 transition-colors">
-                <td className="p-4 text-sm font-medium text-gray-800">
-                  {produto.nome}
-                </td>
-                
-                {/* Esconde a categoria em telas menores que 'sm' */}
-                <td className="p-4 text-sm text-gray-500 hidden sm:table-cell">
-                  {produto.categoria?.descricao || <span className="text-gray-300">-</span>}
-                </td>
-
-                <td className="p-4 text-sm text-gray-600 font-mono whitespace-nowrap">
-                  {formatarPreco(produto.preco)}
-                </td>
-
-                <td className="p-4 whitespace-nowrap">
-                  {renderBadgeSaude(produto)}
-                </td>
-
-                <td className="p-4 flex items-center justify-end gap-2">
-                  <button
-                    onClick={() => navigate(`/editarproduto/${produto.id}`)}
-                    className="p-1.5 text-gray-400 hover:text-orange-500 hover:bg-orange-50 rounded transition-colors"
-                    title="Editar"
-                  >
-                    <Pencil size={18} />
-                  </button>
-
-                  <button
-                    onClick={() => deletarProduto(produto.id)}
-                    className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
-                    title="Deletar"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
+      <div className="max-h-[420px] sm:max-h-[520px] overflow-y-auto">
         {produtos.length === 0 && (
-          <div className="p-8 text-center text-gray-500 text-sm">
+          <div className="p-6 sm:p-8 text-center text-gray-500 text-sm">
             Nenhum produto cadastrado no momento.
           </div>
         )}
+
+        <div className="md:hidden p-4 space-y-3">
+          {produtos.map((produto) => (
+            <div
+              key={produto.id}
+              className="border border-gray-200 rounded-xl p-4 shadow-sm hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <h3 className="text-sm font-semibold text-gray-900 break-words">
+                    {produto.nome}
+                  </h3>
+
+                  <p className="mt-2 text-xs text-gray-500">
+                    {produto.categoria?.descricao || "Sem categoria"}
+                  </p>
+                </div>
+
+                <span className="text-sm font-medium text-slate-900 whitespace-nowrap">
+                  {formatarPreco(produto.preco)}
+                </span>
+              </div>
+
+              <div className="mt-3">
+                {renderBadgeSaude(produto)}
+              </div>
+
+              <div className="mt-4 flex items-center justify-end gap-2">
+                <button
+                  onClick={() => onEditarProduto(produto)}
+                  className="rounded-lg p-2 text-gray-400 hover:text-orange-500 hover:bg-orange-50 transition-colors"
+                  title="Editar"
+                >
+                  <Pencil size={18} />
+                </button>
+
+                <button
+                  onClick={() => deletarProduto(produto.id)}
+                  className="rounded-lg p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                  title="Deletar"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="hidden md:block overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[760px]">
+            <thead className="bg-white border-b border-gray-200 sticky top-0 z-10">
+              <tr>
+                <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                  Nome
+                </th>
+                <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                  Categoria
+                </th>
+                <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                  Preço
+                </th>
+                <th className="px-6 py-4 text-sm font-semibold text-gray-700">
+                  Saúde
+                </th>
+                <th className="px-6 py-4 text-sm font-semibold text-gray-700 text-right w-24">
+                  Ações
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-gray-100">
+              {produtos.map((produto) => (
+                <tr
+                  key={produto.id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
+                  <td className="px-6 py-5 text-sm font-medium text-gray-900">
+                    {produto.nome}
+                  </td>
+
+                  <td className="px-6 py-5 text-sm font-normal text-gray-600">
+                    {produto.categoria?.descricao || <span className="text-gray-300">-</span>}
+                  </td>
+
+                  <td className="px-6 py-5 text-sm font-medium text-slate-900 whitespace-nowrap">
+                    {formatarPreco(produto.preco)}
+                  </td>
+
+                  <td className="px-6 py-5 whitespace-nowrap">
+                    {renderBadgeSaude(produto)}
+                  </td>
+
+                  <td className="px-6 py-5">
+                    <div className="flex items-center justify-end gap-3">
+                      <button
+                        onClick={() => onEditarProduto(produto)}
+                        className="text-gray-400 hover:text-orange-500 transition-colors"
+                        title="Editar"
+                      >
+                        <Pencil size={18} />
+                      </button>
+
+                      <button
+                        onClick={() => deletarProduto(produto.id)}
+                        className="text-gray-400 hover:text-red-500 transition-colors"
+                        title="Deletar"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )

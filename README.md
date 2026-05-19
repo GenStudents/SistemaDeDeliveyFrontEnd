@@ -1,73 +1,125 @@
-# React + TypeScript + Vite
+# Sistema de Delivery — Front-End
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+O **Sistema de Delivery Front-End** é uma aplicação web moderna desenvolvida em **React + TypeScript + Vite**, projetada para gerenciar produtos, categorias e interações do usuário de forma eficiente.  
+O projeto segue uma arquitetura limpa, usa padrões consistentes e integrações bem definidas, mantendo organização e boas práticas.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tecnologias Utilizadas
 
-## React Compiler
+### Core
+- React 19
+- TypeScript
+- Vite 7
+- React Router DOM 7
+- Axios
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### UI / Estilo
+- TailwindCSS 4
+- tailwindcss-animate
+- Lucide React
+- Phosphor Icons
+- React Toastify
+- React Spinners
+- reactjs-popup
 
-## Expanding the ESLint configuration
+### Qualidade do Código
+- ESLint 9
+- TypeScript ESLint
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📁 Estrutura do Projeto
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── produtos/
+│   │   ├── categorias/
+│   │   └── ui/
+│   ├── pages/
+│   ├── routes/
+│   ├── services/
+│   ├── styles/
+│   ├── App.tsx
+│   └── main.tsx
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+└── README.md
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🌐 Rotas da Aplicação
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- `/` — Página inicial
+- `/produtos` — Listagem de produtos
+- `/adicionarproduto` — Cadastro de produto
+- `/editarproduto/:id` — Edição
+- `/deletarproduto/:id` — Exclusão
+- `/categorias` — Gerenciamento de categorias
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## 🔄 Integração com Backend
+
+A aplicação utiliza Axios para comunicação com o backend.  
+Padrões internos:
+
+- Instância Axios centralizada
+- Requisições com async/await
+- Tratamento de erros com React Toastify
+- Loaders com React Spinners
+
+---
+
+## 🎨 Estilização
+
+- TailwindCSS v4 com classes utilitárias
+- Animações com tailwindcss-animate
+- Componentes responsivos e consistentes
+
+---
+
+## ⚙️ Scriptsnpm run dev        # Desenvolvimento
+npm run build      # Build de produção
+npm run preview    # Pré-visualização
+npm run lint       # ESLint
+---
+
+## 🧩 Padrões de Componentização
+
+Para cada funcionalidade:
+
+- Listagem
+- Criação
+- Edição
+- Exclusão
+- Loader
+- Toasts
+- Verificações padronizadas
+
+---
+
+## 📦 Instalação
+
+### 1. Clonar o repositóriogit clone https://github.com/GenStudents/SistemaDeDeliveyFrontEnd
+### 2. Instalar dependênciasnpm install
+### 3. Rodar servidornpm run dev
+---
+
+## 🤝 Contribuindo
+
+1. Faça um fork  
+2. Crie uma branch  
+3. Commit  
+4. Push  
+5. Abra um PR  
+
+---
+
+## 📄 Licença
+
+Projeto acadêmico/educacional. Edite conforme necessário.
